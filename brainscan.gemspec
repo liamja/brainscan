@@ -4,13 +4,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'brainscan/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "brainscan"
+  spec.name          = "Brainscan"
   spec.version       = Brainscan::VERSION
-  spec.authors       = ["TODO: Write your name"]
-  spec.email         = ["TODO: Write your email address"]
-  spec.description   = %q{TODO: Write a gem description}
+  spec.authors       = ["Liam Anderson"]
+  spec.email         = ["liam.anderson.91@gmail.com"]
+  spec.description   = %q{Brainscan is a POC to demonstrate weak passphrases for bitcoin brain wallets can be a Very Bad Idea™.}
   spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/liamja/brainscan"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
