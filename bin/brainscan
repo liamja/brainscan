@@ -1,4 +1,15 @@
 #!/usr/bin/env ruby
 require "brainscan"
+require "formatador"
 
-puts "Brainscan v#{Brainscan::VERSION}"
+formatador = Formatador.new
+wordlist = ARGV[0]
+
+Formatador.display_line("Brainscan v#{Brainscan::VERSION}")
+
+if !wordlist
+  formatador.indent {
+    formatador.display_line("[red]Specify a wordlist.[/]")
+    formatador.display_line("[red]brainscan dictionary.txt[/]")
+  }
+end
