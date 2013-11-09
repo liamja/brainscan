@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require "brainscan"
+
+puts "Brainscan v#{Brainscan::VERSION}"
