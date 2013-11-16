@@ -1,11 +1,11 @@
 module Braimey
-  def hex_private_key_to_wallet_import_format(priv)
+  def self.hex_private_key_to_wallet_import_format(priv)
     extpriv = ["80" + priv].pack("H*")
     csm = Digest::SHA256.digest(Digest::SHA256.digest(extpriv))[0..3]
     Base58.encode58(extpriv + csm)
   end
 
-  def hex_public_key_to_wallet_import_format(pub)
+  def self.hex_public_key_to_wallet_import_format(pub)
     intermediate = [pub].pack("H*")
     intermediate = Digest::SHA256.digest(intermediate)
     intermediate = Digest::RMD160.digest(intermediate)
@@ -17,7 +17,7 @@ module Braimey
     Base58.encode58(extended + csm)
   end
 
-  def hex_private_key_to_hex_public_key(priv)
+  def self.hex_private_key_to_hex_public_key(priv)
     p = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F".to_i(16)
     a = "0000000000000000000000000000000000000000000000000000000000000000".to_i(16)
     b = "0000000000000000000000000000000000000000000000000000000000000007".to_i(16)

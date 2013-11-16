@@ -1,11 +1,14 @@
 #!/usr/bin/env ruby
 require "brainscan"
 require "formatador"
+require "httparty"
+require "uri"
 
 formatador = Formatador.new
 wordlist = ARGV[0]
+keypairs = Array.new()
 
-Formatador.display_line("Brainscan v#{Brainscan::VERSION}")
+formatador.display_line("Brainscan v#{Brainscan::VERSION}")
 
 if !wordlist
   formatador.indent {
@@ -13,3 +16,38 @@ if !wordlist
     formatador.display_line("[red]brainscan dictionary.txt[/]")
   }
 end
+
+File.open(wordlist, "r").each { |line|
+  priv = Digest::SHA256.hexdigest(line.chomp!)
+  pub = Braimey::hex_private_key_to_hex_public_key(priv)
+
+  priv = Braimey::hex_private_key_to_wallet_import_format(priv)
+  pub = Braimey::hex_public_key_to_wallet_import_format(pub)
+
+  formatador.display_line("#{line}")
+  formatador.indent {
+    formatador.display_line("#{priv}")
+    formatador.display_line("#{pub}")
+  }
+
+  keypairs.push({:plain => line, :priv => priv, :pub => pub})
+
+}
+
+str = ''
+
+keypairs.each { |keypair|
+  str += "#{keypair[:pub]}|"
+}
+
+str = URI.escape(str)
+
+response = HTTParty.get("http://blockchain.info/multiaddr?active=#{str}")
+
+response['addresses'].each { |address|
+  if address['final_balance'] > 0 then
+    formatador.display_line("[green]Address with positive balance found: [/]")
+    puts address['address']
+    puts address['final_balance']
+  end
+}
