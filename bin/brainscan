@@ -18,7 +18,8 @@ if !wordlist
 end
 
 File.open(wordlist, "r").each { |line|
-  priv = Digest::SHA256.hexdigest(line.chomp!)
+  line = line.chomp
+  priv = Digest::SHA256.hexdigest(line)
   pub = Braimey::hex_private_key_to_hex_public_key(priv)
 
   priv = Braimey::hex_private_key_to_wallet_import_format(priv)
@@ -46,8 +47,9 @@ response = HTTParty.get("http://blockchain.info/multiaddr?active=#{str}")
 
 response['addresses'].each { |address|
   if address['final_balance'] > 0 then
-    formatador.display_line("[green]Address with positive balance found: [/]")
-    puts address['address']
-    puts address['final_balance']
+    formatador.display_line("[green]Address with balance found: [/]")
+    formatador.display_line("#{address['address']}")
+    formatador.display_line("#{address['n_tx']}")
+    formatador.display_line("#{address['final_balance']}")
   end
 }
